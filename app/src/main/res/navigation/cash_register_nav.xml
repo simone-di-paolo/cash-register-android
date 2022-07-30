@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cash_register_nav"
+    app:startDestination="@id/cashRegisterFragment">
+
+    <fragment
+        android:id="@+id/cashRegisterFragment"
+        android:name="com.dev.simonedipaolo.cashregister.fragments.CashRegisterFragment"
+        android:label="CashRegisterFragment" >
+        <action
+            android:id="@+id/action_cashRegisterFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.dev.simonedipaolo.cashregister.fragments.SettingsFragment"
+        android:label="SettingsFragment" >
+        <action
+            android:id="@+id/action_settingsFragment_to_cashRegisterFragment2"
+            app:destination="@id/cashRegisterFragment" />
+    </fragment>
+</navigation>
