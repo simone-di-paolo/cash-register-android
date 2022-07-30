@@ -16,5 +16,25 @@
     <string name="button_canc">C</string>
     <string name="default_calc_value">0</string>
 
+    // ----- DROPDOWN MENU -----
+    <string-array name="default_dropdown_list">
+        <item>Cibo</item>
+        <item>Bevande</item>
+        <item>Cocktail</item>
+        <item>Altro</item>
+    </string-array>
+
+    // ----- START SCREEN -----
+    <string name="new_cash_register">Crea nuovo</string>
+    <string name="open_cash_register">Apri</string>
+    <string name="settings_title">Impostazioni</string>
+    <string name="receipt_header">Intestazione scontrino</string>
+    <string name="header_receipt_hint">es. Pro Loco - Roma</string>
+    <string name="receipt_subheader_hint">es. Festività della ...</string>
+    <string name="receipt_subheader">Sottotitolo scontrino</string>
+    <string name="receipt_ending_text">Testo fine scontrino</string>
+    <string name="receipt_ending_text_hint">*** NON FISCALE ***</string>
+    <string name="dropdown_category">Categoria</string>
+    <string name="settings">Impostazioni</string>
 
 </resources>
