@@ -3,6 +3,10 @@
 
     <string name="app_name">Cash Register</string>
 
+    // ----- Common labels -----
+    <string name="save_label">Salva</string>
+    <string name="cancel_label">Annulla</string>
+
     // ----- CALCULATOR STRINGS -----
     <string name="number_one">1</string>
     <string name="number_two">2</string>
@@ -41,6 +45,7 @@
 
     // ----- Reparti strings -----
     <string-array name="reparto_cibo_default_string_name">
+        <item>Rep Cibo</item>
         <item>Rep Cibo 0</item>
         <item>Rep Cibo 1</item>
         <item>Rep Cibo 2</item>
@@ -54,6 +59,7 @@
     </string-array>
 
     <string-array name="reparto_bibite_default_string_name">
+        <item>Rep Bibite</item>
         <item>Rep Bibite 0</item>
         <item>Rep Bibite 1</item>
         <item>Rep Bibite 2</item>
@@ -66,6 +72,7 @@
     </string-array>
 
     <string-array name="reparto_cocktail_default_string_name">
+        <item>Rep cocktail</item>
         <item>Rep cocktail 0</item>
         <item>Rep cocktail 1</item>
         <item>Rep cocktail 2</item>
@@ -78,6 +85,7 @@
     </string-array>
 
     <string-array name="reparto_altro_default_string_name">
+        <item>Rep Altro</item>
         <item>Rep Altro 0</item>
         <item>Rep Altro 1</item>
         <item>Rep Altro 2</item>
@@ -89,4 +97,16 @@
         <item>Rep Altro 8</item>
         <item>Rep Altro 9</item>
     </string-array>
+
+    // -----  Configure Reparti Fragment -----
+    <string name="configure_reparti_title">Configurazione reparti</string>
+    <string name="configure_reparti_how_many">Quanti prodotti per questo reparto?</string>
+    <string name="how_many_rep_hint">es. 5 (solo numeri)</string>
+    <string name="create_label">Crea</string>
+    <string name="configura_rep_cibo">Configura Rep Cibo</string>
+    <string name="configura_rep_bibite">Configura Rep Bibite</string>
+    <string name="configura_rep_cocktail">Configura Rep Cocktail</string>
+    <string name="configura_rep_altro">Configura Rep Altro</string>
+
+
 </resources>

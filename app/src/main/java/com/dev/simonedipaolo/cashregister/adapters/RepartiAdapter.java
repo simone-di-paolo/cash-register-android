@@ -21,12 +21,22 @@ public class RepartiAdapter extends RecyclerView.Adapter<RepartiAdapter.RepartiV
     private int repartiImages[];
     private Context context;
     private int index;
+    private int howManyReparti;
 
     public RepartiAdapter(Context context, String repartiNames[], int repartiImages[], int index) {
         this.context = context;
         this.repartiNames = repartiNames;
         this.repartiImages = repartiImages;
         this.index = index;
+        this.howManyReparti = 0;
+    }
+
+    public RepartiAdapter(Context context, String repartiNames[], int repartiImages[], int index, int howManyReparti) {
+        this.context = context;
+        this.repartiNames = repartiNames;
+        this.repartiImages = repartiImages;
+        this.index = index;
+        this.howManyReparti = howManyReparti;
     }
 
     @NonNull
@@ -47,6 +57,9 @@ public class RepartiAdapter extends RecyclerView.Adapter<RepartiAdapter.RepartiV
 
     @Override
     public int getItemCount() {
+        if(howManyReparti != 0) {
+            return howManyReparti;
+        }
         return repartiNames.length;
     }
 

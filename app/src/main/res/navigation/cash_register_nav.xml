@@ -19,5 +19,19 @@
         <action
             android:id="@+id/action_settingsFragment_to_cashRegisterFragment2"
             app:destination="@id/cashRegisterFragment" />
+        <action
+            android:id="@+id/action_settingsFragment_to_configuraRepartiFragment"
+            app:destination="@id/configuraRepartiFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/configuraRepartiFragment"
+        android:name="com.dev.simonedipaolo.cashregister.fragments.ConfiguraRepartiFragment"
+        android:label="ConfiguraRepartiFragment" >
+        <action
+            android:id="@+id/action_configuraRepartiFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
+        <argument
+            android:name="repartoIndex"
+            app:argType="integer" />
     </fragment>
 </navigation>
