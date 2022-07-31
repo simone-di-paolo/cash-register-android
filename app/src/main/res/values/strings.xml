@@ -1,3 +1,112 @@
 <resources>
+    // -----  -----
+
     <string name="app_name">Cash Register</string>
+
+    // ----- Common labels -----
+    <string name="save_label">Salva</string>
+    <string name="cancel_label">Annulla</string>
+
+    // ----- CALCULATOR STRINGS -----
+    <string name="number_one">1</string>
+    <string name="number_two">2</string>
+    <string name="number_three">3</string>
+    <string name="number_four">4</string>
+    <string name="number_five">5</string>
+    <string name="number_six">6</string>
+    <string name="number_seven">7</string>
+    <string name="number_eight">8</string>
+    <string name="number_nine">9</string>
+    <string name="number_zero">0</string>
+    <string name="button_comma">.</string>
+    <string name="button_canc">C</string>
+    <string name="default_calc_value">0</string>
+
+    // ----- DROPDOWN MENU -----
+    <string-array name="default_dropdown_list">
+        <item>Cibo</item>
+        <item>Bevande</item>
+        <item>Cocktail</item>
+        <item>Altro</item>
+    </string-array>
+
+    // ----- START SCREEN -----
+    <string name="new_cash_register">Crea nuovo</string>
+    <string name="open_cash_register">Apri</string>
+    <string name="settings_title">Impostazioni</string>
+    <string name="receipt_header">Intestazione scontrino</string>
+    <string name="header_receipt_hint">es. Pro Loco - Roma</string>
+    <string name="receipt_subheader_hint">es. Festività della ...</string>
+    <string name="receipt_subheader">Sottotitolo scontrino</string>
+    <string name="receipt_ending_text">Testo fine scontrino</string>
+    <string name="receipt_ending_text_hint">*** NON FISCALE ***</string>
+    <string name="dropdown_category">Categoria</string>
+    <string name="settings">Impostazioni</string>
+
+    // ----- Reparti strings -----
+    <string-array name="reparto_cibo_default_string_name">
+        <item>Rep Cibo</item>
+        <item>Rep Cibo 0</item>
+        <item>Rep Cibo 1</item>
+        <item>Rep Cibo 2</item>
+        <item>Rep Cibo 3</item>
+        <item>Rep Cibo 4</item>
+        <item>Rep Cibo 5</item>
+        <item>Rep Cibo 6</item>
+        <item>Rep Cibo 7</item>
+        <item>Rep Cibo 8</item>
+        <item>Rep Cibo 9</item>
+    </string-array>
+
+    <string-array name="reparto_bibite_default_string_name">
+        <item>Rep Bibite</item>
+        <item>Rep Bibite 0</item>
+        <item>Rep Bibite 1</item>
+        <item>Rep Bibite 2</item>
+        <item>Rep Bibite 3</item>
+        <item>Rep Bibite 4</item>
+        <item>Rep Bibite 5</item>
+        <item>Rep Bibite 6</item>
+        <item>Rep Bibite 7</item>
+        <item>Rep Bibite 8</item>
+    </string-array>
+
+    <string-array name="reparto_cocktail_default_string_name">
+        <item>Rep cocktail</item>
+        <item>Rep cocktail 0</item>
+        <item>Rep cocktail 1</item>
+        <item>Rep cocktail 2</item>
+        <item>Rep cocktail 3</item>
+        <item>Rep cocktail 4</item>
+        <item>Rep cocktail 5</item>
+        <item>Rep cocktail 6</item>
+        <item>Rep cocktail 7</item>
+        <item>Rep cocktail 8</item>
+    </string-array>
+
+    <string-array name="reparto_altro_default_string_name">
+        <item>Rep Altro</item>
+        <item>Rep Altro 0</item>
+        <item>Rep Altro 1</item>
+        <item>Rep Altro 2</item>
+        <item>Rep Altro 3</item>
+        <item>Rep Altro 4</item>
+        <item>Rep Altro 5</item>
+        <item>Rep Altro 6</item>
+        <item>Rep Altro 7</item>
+        <item>Rep Altro 8</item>
+        <item>Rep Altro 9</item>
+    </string-array>
+
+    // -----  Configure Reparti Fragment -----
+    <string name="configure_reparti_title">Configurazione reparti</string>
+    <string name="configure_reparti_how_many">Quanti prodotti per questo reparto?</string>
+    <string name="how_many_rep_hint">es. 5 (solo numeri)</string>
+    <string name="create_label">Crea</string>
+    <string name="configura_rep_cibo">Configura Rep Cibo</string>
+    <string name="configura_rep_bibite">Configura Rep Bibite</string>
+    <string name="configura_rep_cocktail">Configura Rep Cocktail</string>
+    <string name="configura_rep_altro">Configura Rep Altro</string>
+
+
 </resources>
