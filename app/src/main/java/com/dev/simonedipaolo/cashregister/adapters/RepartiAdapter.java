@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,22 +20,25 @@ public class RepartiAdapter extends RecyclerView.Adapter<RepartiAdapter.RepartiV
 
     private String repartiNames[];
     private int repartiImages[];
+    private int editIcon;
     private Context context;
     private int index;
     private int howManyReparti;
 
-    public RepartiAdapter(Context context, String repartiNames[], int repartiImages[], int index) {
+    public RepartiAdapter(Context context, String repartiNames[], int repartiImages[], int editIcon, int index) {
         this.context = context;
         this.repartiNames = repartiNames;
         this.repartiImages = repartiImages;
+        this.editIcon = editIcon;
         this.index = index;
         this.howManyReparti = 0;
     }
 
-    public RepartiAdapter(Context context, String repartiNames[], int repartiImages[], int index, int howManyReparti) {
+    public RepartiAdapter(Context context, String repartiNames[], int repartiImages[], int index, int editIcon, int howManyReparti) {
         this.context = context;
         this.repartiNames = repartiNames;
         this.repartiImages = repartiImages;
+        this.editIcon = editIcon;
         this.index = index;
         this.howManyReparti = howManyReparti;
     }
@@ -51,8 +55,22 @@ public class RepartiAdapter extends RecyclerView.Adapter<RepartiAdapter.RepartiV
     @Override
     public void onBindViewHolder(@NonNull RepartiViewHolder holder, int position) {
         // TODO leggere quanti reparti sono stati creati nella memoria e creare N reparti con N nomi letti
-        holder.text.setText(repartiNames[position]);
-        holder.image.setImageResource(repartiImages[index]);
+        if(howManyReparti != 0) {
+            holder.text.setText(repartiNames[0]);
+            holder.image.setImageResource(repartiImages[index]);
+        } else {
+            holder.text.setText(repartiNames[position]);
+            holder.image.setImageResource(repartiImages[index]);
+        }
+
+        // edit icon listener
+        holder.editIcon.setImageResource(R.drawable.ic_baseline_edit_24);
+        holder.editIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(context, "" + holder.getAdapterPosition(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override
@@ -68,11 +86,13 @@ public class RepartiAdapter extends RecyclerView.Adapter<RepartiAdapter.RepartiV
 
         TextView text;
         ImageView image;
+        ImageView editIcon;
 
         public RepartiViewHolder(@NonNull View itemView) {
             super(itemView);
             text = itemView.findViewById(R.id.repartiRowText);
             image = itemView.findViewById(R.id.rowIcon);
+            editIcon = itemView.findViewById(R.id.editIcon);
         }
     }
 
