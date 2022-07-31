@@ -143,7 +143,7 @@ public class CashRegisterFragment extends Fragment implements AdapterView.OnItem
 
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
-
+        // empty
     }
 
 }
