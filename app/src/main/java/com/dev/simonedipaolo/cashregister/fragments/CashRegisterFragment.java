@@ -14,8 +14,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.dev.simonedipaolo.cashregister.R;
+import com.dev.simonedipaolo.cashregister.adapters.RepartiAdapter;
 
 import java.util.ArrayList;
 
@@ -37,9 +40,18 @@ public class CashRegisterFragment extends Fragment implements AdapterView.OnItem
     private Button button9;
     private Button buttonCanc;
     private Button buttonComma;
-    private Button settings;
+    private Button settingsButton;
 
     private Spinner dropdown;
+
+    private RecyclerView recyclerView;
+
+    private String repartiCiboNames[];
+    private String repartiBibiteNames[];
+    private String repartiCocktailNames[];
+    private String repartiAltroNames[];
+    private int repartiImages[] = {R.drawable.ic_baseline_fastfood_24, R.drawable.ic_drink_24, R.drawable.ic_wine_24, R.drawable.ic_baseline_attach_money_24};
+    private RepartiAdapter repartiAdapter;
 
     public CashRegisterFragment() {
         // empty
@@ -53,6 +65,16 @@ public class CashRegisterFragment extends Fragment implements AdapterView.OnItem
 
         viewsInitializer(v);
         createDropdownList();
+
+        repartiCiboNames = getResources().getStringArray(R.array.reparto_cibo_default_string_name);
+        repartiBibiteNames = getResources().getStringArray(R.array.reparto_bibite_default_string_name);
+        repartiCocktailNames = getResources().getStringArray(R.array.reparto_cocktail_default_string_name);;
+        repartiAltroNames = getResources().getStringArray(R.array.reparto_altro_default_string_name);
+
+        // custom adapter for reparti
+        repartiAdapter = new RepartiAdapter(this.getContext(), repartiCiboNames, repartiImages, 0);
+        recyclerView.setAdapter(repartiAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
 
         return v;
     }
@@ -79,17 +101,44 @@ public class CashRegisterFragment extends Fragment implements AdapterView.OnItem
         button8 = v.findViewById(R.id.calculator_button8);
         button9 = v.findViewById(R.id.calculator_button9);
 
-        settings = v.findViewById(R.id.settingsButton);
-        settings.setOnClickListener(view -> Navigation.findNavController(v).navigate(R.id.settingsFragment));
+        // settings button
+        settingsButton = v.findViewById(R.id.settingsButton);
+        settingsButton.setOnClickListener(view -> Navigation.findNavController(v).navigate(R.id.settingsFragment));
 
         // dropdown
         dropdown = v.findViewById(R.id.dropdown);
+
+        // recycler view
+        recyclerView = v.findViewById(R.id.repartiRecyclerView);
     }
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         String choice = adapterView.getItemAtPosition(i).toString();
         Toast.makeText(this.getContext(), choice, Toast.LENGTH_SHORT).show();
+
+        switch(i) {
+            case 0:
+                repartiAdapter = new RepartiAdapter(this.getContext(), repartiCiboNames, repartiImages, i);
+                recyclerView.setAdapter(repartiAdapter);
+                recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
+                break;
+            case 1:
+                repartiAdapter = new RepartiAdapter(this.getContext(), repartiBibiteNames, repartiImages, i);
+                recyclerView.setAdapter(repartiAdapter);
+                recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
+                break;
+            case 2:
+                repartiAdapter = new RepartiAdapter(this.getContext(), repartiCocktailNames, repartiImages, i);
+                recyclerView.setAdapter(repartiAdapter);
+                recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
+                break;
+            case 3:
+                repartiAdapter = new RepartiAdapter(this.getContext(), repartiAltroNames, repartiImages, i);
+                recyclerView.setAdapter(repartiAdapter);
+                recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
+                break;
+        }
     }
 
     @Override

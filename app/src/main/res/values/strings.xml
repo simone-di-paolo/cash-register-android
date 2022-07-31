@@ -1,4 +1,6 @@
 <resources>
+    // -----  -----
+
     <string name="app_name">Cash Register</string>
 
     // ----- CALCULATOR STRINGS -----
@@ -37,4 +39,54 @@
     <string name="dropdown_category">Categoria</string>
     <string name="settings">Impostazioni</string>
 
+    // ----- Reparti strings -----
+    <string-array name="reparto_cibo_default_string_name">
+        <item>Rep Cibo 0</item>
+        <item>Rep Cibo 1</item>
+        <item>Rep Cibo 2</item>
+        <item>Rep Cibo 3</item>
+        <item>Rep Cibo 4</item>
+        <item>Rep Cibo 5</item>
+        <item>Rep Cibo 6</item>
+        <item>Rep Cibo 7</item>
+        <item>Rep Cibo 8</item>
+        <item>Rep Cibo 9</item>
+    </string-array>
+
+    <string-array name="reparto_bibite_default_string_name">
+        <item>Rep Bibite 0</item>
+        <item>Rep Bibite 1</item>
+        <item>Rep Bibite 2</item>
+        <item>Rep Bibite 3</item>
+        <item>Rep Bibite 4</item>
+        <item>Rep Bibite 5</item>
+        <item>Rep Bibite 6</item>
+        <item>Rep Bibite 7</item>
+        <item>Rep Bibite 8</item>
+    </string-array>
+
+    <string-array name="reparto_cocktail_default_string_name">
+        <item>Rep cocktail 0</item>
+        <item>Rep cocktail 1</item>
+        <item>Rep cocktail 2</item>
+        <item>Rep cocktail 3</item>
+        <item>Rep cocktail 4</item>
+        <item>Rep cocktail 5</item>
+        <item>Rep cocktail 6</item>
+        <item>Rep cocktail 7</item>
+        <item>Rep cocktail 8</item>
+    </string-array>
+
+    <string-array name="reparto_altro_default_string_name">
+        <item>Rep Altro 0</item>
+        <item>Rep Altro 1</item>
+        <item>Rep Altro 2</item>
+        <item>Rep Altro 3</item>
+        <item>Rep Altro 4</item>
+        <item>Rep Altro 5</item>
+        <item>Rep Altro 6</item>
+        <item>Rep Altro 7</item>
+        <item>Rep Altro 8</item>
+        <item>Rep Altro 9</item>
+    </string-array>
 </resources>
