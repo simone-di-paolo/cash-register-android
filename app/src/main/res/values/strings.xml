@@ -107,6 +107,8 @@
     <string name="configura_rep_bibite">Configura Rep Bibite</string>
     <string name="configura_rep_cocktail">Configura Rep Cocktail</string>
     <string name="configura_rep_altro">Configura Rep Altro</string>
+    <string name="edit_nome_reparto">Nome reparto</string>
+    <string name="panino_e_salsiccia_hint">Panino e salsiccia</string>
 
 
 </resources>

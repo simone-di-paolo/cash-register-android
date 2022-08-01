@@ -66,13 +66,6 @@ public class CashRegisterFragment extends Fragment implements AdapterView.OnItem
         viewsInitializer(v);
         createDropdownList();
 
-        /*
-        repartiCiboNames = getResources().getStringArray(R.array.reparto_cibo_default_string_name);
-        repartiBibiteNames = getResources().getStringArray(R.array.reparto_bibite_default_string_name);
-        repartiCocktailNames = getResources().getStringArray(R.array.reparto_cocktail_default_string_name);;
-        repartiAltroNames = getResources().getStringArray(R.array.reparto_altro_default_string_name);
-        */
-
         repartiCiboNames = ResourcesRetriever.getRepartiCiboNames(this.getContext());
         repartiBibiteNames = ResourcesRetriever.getRepartiBibiteNames(this.getContext());
         repartiCocktailNames = ResourcesRetriever.getRepartiCocktailNames(this.getContext());
@@ -81,7 +74,7 @@ public class CashRegisterFragment extends Fragment implements AdapterView.OnItem
         editIcon = ResourcesRetriever.getEditIcon();
 
         // custom adapter for reparti
-        repartiAdapter = new RepartiAdapter(this.getContext(), repartiCiboNames, repartiImages, editIcon, 0);
+        repartiAdapter = new RepartiAdapter(this.getContext(), this, repartiCiboNames, repartiImages, editIcon, 0);
         recyclerView.setAdapter(repartiAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
 
@@ -128,22 +121,22 @@ public class CashRegisterFragment extends Fragment implements AdapterView.OnItem
 
         switch(i) {
             case 0:
-                repartiAdapter = new RepartiAdapter(this.getContext(), repartiCiboNames, repartiImages, editIcon, i);
+                repartiAdapter = new RepartiAdapter(this.getContext(), this, repartiCiboNames, repartiImages, editIcon, i);
                 recyclerView.setAdapter(repartiAdapter);
                 recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
                 break;
             case 1:
-                repartiAdapter = new RepartiAdapter(this.getContext(), repartiBibiteNames, repartiImages, editIcon, i);
+                repartiAdapter = new RepartiAdapter(this.getContext(), this, repartiBibiteNames, repartiImages, editIcon, i);
                 recyclerView.setAdapter(repartiAdapter);
                 recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
                 break;
             case 2:
-                repartiAdapter = new RepartiAdapter(this.getContext(), repartiCocktailNames, repartiImages, editIcon, i);
+                repartiAdapter = new RepartiAdapter(this.getContext(), this, repartiCocktailNames, repartiImages, editIcon, i);
                 recyclerView.setAdapter(repartiAdapter);
                 recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
                 break;
             case 3:
-                repartiAdapter = new RepartiAdapter(this.getContext(), repartiAltroNames, repartiImages, editIcon, i);
+                repartiAdapter = new RepartiAdapter(this.getContext(), this, repartiAltroNames, repartiImages, editIcon, i);
                 recyclerView.setAdapter(repartiAdapter);
                 recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
                 break;

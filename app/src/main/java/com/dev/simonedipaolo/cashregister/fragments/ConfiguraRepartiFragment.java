@@ -7,12 +7,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavDirections;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -61,20 +59,26 @@ public class ConfiguraRepartiFragment extends Fragment {
     }
 
     private void instantiateViews(View v) {
+
+        ConfiguraRepartiFragment instance = this;
+
         howManyReparti = v.findViewById(R.id.howManyRepartiEditText);
         howManyReparti.setInputType(InputType.TYPE_CLASS_NUMBER);
 
-        repartiAdapter = new RepartiAdapter(this.getContext(), repartiNames, repartiImages, editIcon, repartoIndex);
+        repartiAdapter = new RepartiAdapter(this.getContext(), instance, repartiNames, repartiImages, editIcon, repartoIndex);
 
         creaReparti = v.findViewById(R.id.crea_reparti_button);
         creaReparti.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Toast.makeText(getActivity().getApplicationContext(), howManyReparti.getText().toString(), Toast.LENGTH_SHORT).show();
-                repartiAdapter = new RepartiAdapter(getActivity().getApplicationContext(), repartiNames, repartiImages, repartoIndex, editIcon, Integer.parseInt(howManyReparti.getText().toString()));
-                // custom adapter for reparti
-                recyclerView.setAdapter(repartiAdapter);
-                recyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
+                try {
+                    repartiAdapter = new RepartiAdapter(getActivity().getApplicationContext(), instance, repartiNames, repartiImages, repartoIndex, editIcon, Integer.parseInt(howManyReparti.getText().toString()));
+                    // custom adapter for reparti
+                    recyclerView.setAdapter(repartiAdapter);
+                    recyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
@@ -96,7 +100,6 @@ public class ConfiguraRepartiFragment extends Fragment {
         }
         repartiImages = ResourcesRetriever.getRepartiImages();
         editIcon = ResourcesRetriever.getEditIcon();
-
     }
 
 }
