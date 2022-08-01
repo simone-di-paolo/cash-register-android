@@ -9,24 +9,29 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.dev.simonedipaolo.cashregister.R;
+import com.dev.simonedipaolo.cashregister.utils.EditRepartoDialog;
 
 /**
  * Created by Simone Di Paolo on 31/07/2022.
  */
 public class RepartiAdapter extends RecyclerView.Adapter<RepartiAdapter.RepartiViewHolder> {
 
+    private Context context;
+    private Fragment fragment;
+
     private String repartiNames[];
     private int repartiImages[];
     private int editIcon;
-    private Context context;
     private int index;
     private int howManyReparti;
 
-    public RepartiAdapter(Context context, String repartiNames[], int repartiImages[], int editIcon, int index) {
+    public RepartiAdapter(Context context, Fragment fragment, String repartiNames[], int repartiImages[], int editIcon, int index) {
         this.context = context;
+        this.fragment = fragment;
         this.repartiNames = repartiNames;
         this.repartiImages = repartiImages;
         this.editIcon = editIcon;
@@ -34,8 +39,9 @@ public class RepartiAdapter extends RecyclerView.Adapter<RepartiAdapter.RepartiV
         this.howManyReparti = 0;
     }
 
-    public RepartiAdapter(Context context, String repartiNames[], int repartiImages[], int index, int editIcon, int howManyReparti) {
+    public RepartiAdapter(Context context, Fragment fragment, String repartiNames[], int repartiImages[], int index, int editIcon, int howManyReparti) {
         this.context = context;
+        this.fragment = fragment;
         this.repartiNames = repartiNames;
         this.repartiImages = repartiImages;
         this.editIcon = editIcon;
@@ -69,6 +75,7 @@ public class RepartiAdapter extends RecyclerView.Adapter<RepartiAdapter.RepartiV
             @Override
             public void onClick(View view) {
                 Toast.makeText(context, "" + holder.getAdapterPosition(), Toast.LENGTH_SHORT).show();
+                EditRepartoDialog.openDialog(fragment.getParentFragmentManager());
             }
         });
     }
