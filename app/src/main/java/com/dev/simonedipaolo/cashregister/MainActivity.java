@@ -5,8 +5,10 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import com.dev.simonedipaolo.cashregister.fragments.CashRegisterFragment;
+import com.dev.simonedipaolo.cashregister.utils.EditRepartoDialog;
 
 public class MainActivity extends AppCompatActivity {
 
