@@ -68,16 +68,6 @@ public class RepartiAdapter extends RecyclerView.Adapter<RepartiAdapter.RepartiV
             holder.text.setText(repartiNames[position]);
             holder.image.setImageResource(repartiImages[index]);
         }
-
-        // edit icon listener
-        holder.editIcon.setImageResource(R.drawable.ic_baseline_edit_24);
-        holder.editIcon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(context, "" + holder.getAdapterPosition(), Toast.LENGTH_SHORT).show();
-                EditRepartoDialog.openDialog(fragment.getParentFragmentManager());
-            }
-        });
     }
 
     @Override
@@ -89,17 +79,15 @@ public class RepartiAdapter extends RecyclerView.Adapter<RepartiAdapter.RepartiV
     }
 
     // inner class
-    public class RepartiViewHolder extends RecyclerView.ViewHolder{
+    public class RepartiViewHolder extends RecyclerView.ViewHolder {
 
         TextView text;
         ImageView image;
-        ImageView editIcon;
 
         public RepartiViewHolder(@NonNull View itemView) {
             super(itemView);
             text = itemView.findViewById(R.id.repartiRowText);
             image = itemView.findViewById(R.id.rowIcon);
-            editIcon = itemView.findViewById(R.id.editIcon);
         }
     }
 

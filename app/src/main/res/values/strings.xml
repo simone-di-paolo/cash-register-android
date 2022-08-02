@@ -109,6 +109,8 @@
     <string name="configura_rep_altro">Configura Rep Altro</string>
     <string name="edit_nome_reparto">Nome reparto</string>
     <string name="panino_e_salsiccia_hint">Panino e salsiccia</string>
+    <string name="clicca_su_un_reparto_nper_cambiare_il_nome">Clicca su un reparto \nper cambiare il nome</string>
+    <string name="modifica_nome_reparto">Modifica nome reparto</string>
 
 
 </resources>
