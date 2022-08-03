@@ -1,9 +1,7 @@
 package com.dev.simonedipaolo.cashregister.fragments;
 
-import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
-import android.text.InputType;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,16 +10,25 @@ import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.dev.simonedipaolo.cashregister.R;
-import com.dev.simonedipaolo.cashregister.adapters.RepartiAdapter;
 import com.dev.simonedipaolo.cashregister.adapters.RepartiSettingsAdapter;
+import com.dev.simonedipaolo.cashregister.entities.Reparto;
+import com.dev.simonedipaolo.cashregister.room.StandDatabase;
+import com.dev.simonedipaolo.cashregister.utils.ConstantsUtils;
 import com.dev.simonedipaolo.cashregister.utils.EditRepartoDialog;
+import com.dev.simonedipaolo.cashregister.utils.OpenDatabase;
 import com.dev.simonedipaolo.cashregister.utils.ResourcesRetriever;
+
+import org.apache.commons.collections4.CollectionUtils;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by Simone Di Paolo on 31/07/2022.
@@ -29,6 +36,7 @@ import com.dev.simonedipaolo.cashregister.utils.ResourcesRetriever;
 public class ConfiguraRepartiFragment extends Fragment {
 
     private Button creaReparti;
+    private Button aggiungiReparto;
     private Button saveButton;
     private EditText howManyReparti;
 
@@ -46,10 +54,15 @@ public class ConfiguraRepartiFragment extends Fragment {
     private int repartiImages[];
     private int editIcon;
 
+    private StandDatabase db;
+    private List<Reparto> repartiFromDatabase;
+    private List<String> repartiNamesFromDatabaseList;
+
     public ConfiguraRepartiFragment() {
         // empty
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -61,43 +74,67 @@ public class ConfiguraRepartiFragment extends Fragment {
 
         recyclerView = v.findViewById(R.id.repartiSettingsRecyclerView);
 
+        db = OpenDatabase.openDB(getContext(), ConstantsUtils.DATABASE_NAME);
+        repartiFromDatabase = db.standDao().getAllReparto();
+
+        // recupero i nomi dei reparti già settati nel db
+        repartiNamesFromDatabaseList = retrieveRepartiFromDb();
+
+        // setto l'adapter
+        repartiSettingsAdapter = new RepartiSettingsAdapter(getActivity().getApplicationContext(), this);
+        setAdapter(repartiSettingsAdapter);
+
         instantiateViews(v);
 
         return v;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private List<String> retrieveRepartiFromDb() {
+        List<String> repartiTemp = new ArrayList<>();
+        if (CollectionUtils.isNotEmpty(repartiFromDatabase)) {
+            repartiTemp = repartiFromDatabase.stream()
+                    .map(Reparto::getNomeReparto)
+                    .collect(Collectors.toList());
+        } else {
+            repartiTemp.add("Modifica questo nome");
+        }
+
+        return repartiTemp;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
     private void instantiateViews(View v) {
         ConfiguraRepartiFragment instance = this;
 
-        howManyReparti = v.findViewById(R.id.howManyRepartiEditText);
-        howManyReparti.setInputType(InputType.TYPE_CLASS_NUMBER);
+        // recupero di nuovi i reparti ed i nomi dai reparti dal db (magari sono aggiornati)
+        repartiFromDatabase = db.standDao().getAllReparto();
+        repartiNamesFromDatabaseList = retrieveRepartiFromDb();
 
-        repartiSettingsAdapter = new RepartiSettingsAdapter(this.getContext(), instance, repartiNames, repartoIndex);
-
-        creaReparti = v.findViewById(R.id.crea_reparti_button);
-        creaReparti.setOnClickListener(new View.OnClickListener() {
+        // gestisco il click del pulsante crea reparto
+        aggiungiReparto = v.findViewById(R.id.aggiungiRepartoSingolo);
+        aggiungiReparto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                try {
-                    repartiSettingsAdapter = new RepartiSettingsAdapter(getActivity().getApplicationContext(), instance, repartiNames, Integer.parseInt(howManyReparti.getText().toString()));
-                    // custom adapter for reparti
-                    recyclerView.setAdapter(repartiSettingsAdapter);
-                    recyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
-                } catch (NumberFormatException e) {
-                    e.printStackTrace();
-                }
+                repartiSettingsAdapter.addNewReparto();
             }
         });
-/*
-        saveButton = v.findViewById(R.id.save_button);
+
+        // save button
+        saveButton = v.findViewById(R.id.test);
         saveButton.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View view) {
-                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                fragmentManager.popBackStack();
+//                Toast.makeText(getContext(), ((EditText) recyclerView.findViewHolderForItemId(0).itemView.findViewById(R.id.repartoNameEditField)).getText().toString(),
+ //                       Toast.LENGTH_SHORT).show();
             }
         });
-*/
+    }
+
+    private void setAdapter(RepartiSettingsAdapter repartiSettingsAdapter) {
+        recyclerView.setAdapter(repartiSettingsAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
     }
 
     private void initializeDrawables() {
