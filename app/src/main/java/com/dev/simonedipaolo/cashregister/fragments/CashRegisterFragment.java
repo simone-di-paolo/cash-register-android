@@ -19,6 +19,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.dev.simonedipaolo.cashregister.R;
 import com.dev.simonedipaolo.cashregister.adapters.RepartiAdapter;
+import com.dev.simonedipaolo.cashregister.room.StandDatabase;
+import com.dev.simonedipaolo.cashregister.utils.ConstantsUtils;
+import com.dev.simonedipaolo.cashregister.utils.OpenDatabase;
 import com.dev.simonedipaolo.cashregister.utils.ResourcesRetriever;
 
 /**
@@ -26,7 +29,7 @@ import com.dev.simonedipaolo.cashregister.utils.ResourcesRetriever;
  */
 public class CashRegisterFragment extends Fragment implements AdapterView.OnItemSelectedListener {
 
-    // BUTTONS
+    // CAULCULATORS BUTTONS
     private Button button0;
     private Button button1;
     private Button button2;
@@ -53,6 +56,8 @@ public class CashRegisterFragment extends Fragment implements AdapterView.OnItem
     private int editIcon;
     private RepartiAdapter repartiAdapter;
 
+    private StandDatabase db;
+
     public CashRegisterFragment() {
         // empty
     }
@@ -62,6 +67,8 @@ public class CashRegisterFragment extends Fragment implements AdapterView.OnItem
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         container.removeAllViews();
         View v = inflater.inflate(R.layout.fragment_cash_register, container, false);
+
+        db = OpenDatabase.openDB(getActivity().getApplicationContext(), ConstantsUtils.DATABASE_NAME);
 
         viewsInitializer(v);
         createDropdownList();
