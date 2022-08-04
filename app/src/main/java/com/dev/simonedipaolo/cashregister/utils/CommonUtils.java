@@ -1,4 +1,4 @@
-package com.dev.simonedipaolo.cashregister.core;
+package com.dev.simonedipaolo.cashregister.utils;
 
 import android.os.Build;
 
@@ -7,20 +7,9 @@ import androidx.annotation.RequiresApi;
 import java.time.LocalDateTime;
 
 /**
- * Created by Simone Di Paolo on 28/07/2022.
+ * Created by Simone Di Paolo on 04/08/2022.
  */
-public class CashRegister {
-
-    private int receiptNumber = 0;
-
-    private double total;
-    private String receipt;
-
-    public CashRegister() {
-        total = 0;
-        receipt = "";
-        receiptNumber++;
-    }
+public class CommonUtils {
 
     /**
      * Return the receipt closure with number of transaction
@@ -28,7 +17,7 @@ public class CashRegister {
      * @return
      */
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public String getReceiptClosure() {
+    public static String getReceiptClosure(int receiptNumber) {
         String closure = "";
         closure = "#" + (++receiptNumber);
 
@@ -41,26 +30,6 @@ public class CashRegister {
 
         closure += " - " + actualDate;
         return closure;
-    }
-
-    /**
-     * Increase the receipt number
-     */
-    public void incrementReceiptNumber() {
-        receiptNumber++;
-    }
-
-    // getters
-    public double getTotal() {
-        return total;
-    }
-
-    public String getReceipt() {
-        return receipt;
-    }
-
-    public int getReceiptNumber() {
-        return receiptNumber;
     }
 
 }

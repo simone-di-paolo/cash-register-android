@@ -4,6 +4,7 @@ import androidx.room.*;
 
 import java.lang.reflect.Type;
 
+import com.dev.simonedipaolo.cashregister.entities.Receipt;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -22,6 +23,20 @@ public class Converters {
 
     @TypeConverter
     public static String listToString(List<String> list) {
+        Gson gson = new Gson();
+        String json = gson.toJson(list);
+
+        return json;
+    }
+
+    @TypeConverter
+    public static List<Receipt> receiptToList(String value) {
+        Type listType = new TypeToken<List<Receipt>>() {}.getType();
+        return new Gson().fromJson(value, listType);
+    }
+
+    @TypeConverter
+    public static String listToReceipt(List<Receipt> list) {
         Gson gson = new Gson();
         String json = gson.toJson(list);
 
