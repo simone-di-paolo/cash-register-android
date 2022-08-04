@@ -2,6 +2,7 @@ package com.dev.simonedipaolo.cashregister.room;
 
 import androidx.room.Database;
 import androidx.room.RoomDatabase;
+import androidx.room.TypeConverters;
 
 import com.dev.simonedipaolo.cashregister.entities.Reparto;
 import com.dev.simonedipaolo.cashregister.entities.Stand;
@@ -14,7 +15,8 @@ import com.dev.simonedipaolo.cashregister.entities.TipologiaReparto;
         Stand.class,
         TipologiaReparto.class,
         Reparto.class
-}, version = 1)
+}, version = 2)
+@TypeConverters({Converters.class})
 public abstract class StandDatabase extends RoomDatabase {
     public abstract StandDao standDao();
 }

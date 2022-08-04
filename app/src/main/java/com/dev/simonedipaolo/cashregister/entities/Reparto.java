@@ -2,6 +2,7 @@ package com.dev.simonedipaolo.cashregister.entities;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import com.dev.simonedipaolo.cashregister.utils.ConstantsUtils;
@@ -19,11 +20,13 @@ public class Reparto {
     @ColumnInfo(name = "nome_reparto")
     private String nomeReparto;
 
+    @Ignore
     public Reparto() {
         // empty
         nomeReparto = ConstantsUtils.DEFAULT_REPARTO_NAME;
     }
 
+    @Ignore
     public Reparto(String nomeReparto) {
         this.nomeReparto = nomeReparto;
     }
