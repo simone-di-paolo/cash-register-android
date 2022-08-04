@@ -15,6 +15,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.dev.simonedipaolo.cashregister.R;
 import com.dev.simonedipaolo.cashregister.entities.Reparto;
+import com.dev.simonedipaolo.cashregister.entities.TipologiaReparto;
+import com.dev.simonedipaolo.cashregister.fragments.ConfiguraRepartiFragmentArgs;
 import com.dev.simonedipaolo.cashregister.room.StandDatabase;
 import com.dev.simonedipaolo.cashregister.utils.ConstantsUtils;
 import com.dev.simonedipaolo.cashregister.utils.EditRepartoDialog;
@@ -33,14 +35,27 @@ public class RepartiSettingsAdapter extends RecyclerView.Adapter<RepartiSettings
     private Fragment fragment;
 
     private StandDatabase db;
-    private List<Reparto> reparti;
+    //private List<Reparto> reparti;
+    private List<TipologiaReparto> reparti;
+    private int tipologiaRepartoIndex;
 
     public RepartiSettingsAdapter(Context context, Fragment fragment) {
         this.context = context;
         this.fragment = fragment;
 
         db = OpenDatabase.openDB(fragment.getContext(), ConstantsUtils.DATABASE_NAME);
-        reparti = db.standDao().getAllReparto();
+        reparti = db.standDao().getAllTipologiaReparto();
+        // default value
+        this.tipologiaRepartoIndex = 0;
+    }
+
+    public RepartiSettingsAdapter(Context context, Fragment fragment, int tipologiaRepartoIndex) {
+        this.context = context;
+        this.fragment = fragment;
+
+        db = OpenDatabase.openDB(fragment.getContext(), ConstantsUtils.DATABASE_NAME);
+        reparti = db.standDao().getAllTipologiaReparto();
+        this.tipologiaRepartoIndex = tipologiaRepartoIndex;
     }
 
     @NonNull
@@ -54,19 +69,42 @@ public class RepartiSettingsAdapter extends RecyclerView.Adapter<RepartiSettings
 
     @Override
     public void onBindViewHolder(@NonNull RepartiViewHolder holder, int position) {
-        // setto il testo nell'edit text leggendolo dal database
-        holder.editText.setText(reparti.get(holder.getAdapterPosition()).getNomeReparto());
+        // prendo il name del reparto in base alla tipologia reparto che ho cliccato
+        String repartoName = reparti.get(tipologiaRepartoIndex).getListaReparti().get(holder.getAdapterPosition());
+
+        holder.editText.setText(repartoName);
 
         // gestisco il save del singolo row
         holder.saveIcon.setImageResource(R.drawable.ic_baseline_save_24);
         holder.saveIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                db.standDao().updateReparto(new Reparto(reparti.get(holder.getAdapterPosition()).getRepartoUid(), holder.editText.getText().toString()));
-                reparti = db.standDao().getAllReparto();
+                // prendo la tipologia reparto
+                TipologiaReparto tempTipologiaReparto = reparti.get(tipologiaRepartoIndex);
+                // prendo la lista dei nomi
+                List<String> nomiRepartiToUpdate = tempTipologiaReparto.getListaReparti();
+                // aggiorno il nome all'i-esima posizione
+                nomiRepartiToUpdate.set(holder.getAdapterPosition(), holder.editText.getText().toString());
+                //sostituisco la lista nella tipologia reparto
+                tempTipologiaReparto.setListaReparti(nomiRepartiToUpdate);
+
+                // aggiorno la tipologia reparto nel DB
+                db.standDao().updateTipologiaReparto(tempTipologiaReparto);
+                reparti = db.standDao().getAllTipologiaReparto();
                 notifyItemRangeChanged(holder.getAdapterPosition(), getItemCount());
             }
         });
+
+        /*holder.saveIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                db.standDao().updateReparto(new Reparto(reparti.get(holder.getAdapterPosition()).getTipologiaRepartoUid(), holder.editText.getText().toString()));
+                reparti = db.standDao().getAllTipologiaReparto();
+                notifyItemRangeChanged(holder.getAdapterPosition(), getItemCount());
+            }
+        });
+        */
+
 
         // gestisco il delete del singolo row
         holder.deleteIcon.setImageResource(R.drawable.ic_baseline_delete_24);
@@ -74,8 +112,8 @@ public class RepartiSettingsAdapter extends RecyclerView.Adapter<RepartiSettings
             @Override
             public void onClick(View view) {
                 //cancella elemento presente in DB ed aggiorna l'adapter
-                db.standDao().deleteReparto(new Reparto(reparti.get(holder.getAdapterPosition()).getRepartoUid(), holder.editText.getText().toString()));
-                reparti = db.standDao().getAllReparto();
+                db.standDao().deleteReparto(new Reparto(reparti.get(holder.getAdapterPosition()).getTipologiaRepartoUid(), holder.editText.getText().toString()));
+                reparti = db.standDao().getAllTipologiaReparto();
                 notifyItemRemoved(holder.getAdapterPosition());
                 notifyItemRangeChanged(holder.getAdapterPosition(), getItemCount());
             }
@@ -84,8 +122,19 @@ public class RepartiSettingsAdapter extends RecyclerView.Adapter<RepartiSettings
 
     public void addNewReparto() {
         db.standDao().insertReparto(new Reparto());
-        reparti = db.standDao().getAllReparto();
+        reparti = db.standDao().getAllTipologiaReparto();
         notifyItemInserted(reparti.size());
+    }
+
+    public void addNewTipologiaReparto() {
+        String tempReparto = ConstantsUtils.DEFAULT_REPARTO_NAME;
+        List<String> tempListaRepartiToUpdate = reparti.get(tipologiaRepartoIndex).getListaReparti();
+        tempListaRepartiToUpdate.add(tempReparto);
+        reparti.get(tipologiaRepartoIndex).setListaReparti(tempListaRepartiToUpdate);
+
+        db.standDao().updateTipologiaReparto(reparti.get(tipologiaRepartoIndex));
+        reparti = db.standDao().getAllTipologiaReparto();
+        notifyItemInserted(reparti.get(tipologiaRepartoIndex).getListaReparti().size());
     }
 
     public boolean saveAllRepartiInDatabase() {
@@ -95,7 +144,7 @@ public class RepartiSettingsAdapter extends RecyclerView.Adapter<RepartiSettings
 
     @Override
     public int getItemCount() {
-        return reparti.size();
+        return reparti.get(tipologiaRepartoIndex).getListaReparti().size();
     }
 
 

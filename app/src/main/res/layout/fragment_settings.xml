@@ -6,18 +6,16 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/configurazione_reparti_main_settings_title"
+        android:id="@+id/title_tipologia_reparti"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="376dp"
-        android:fontFamily="@font/roboto"
-        android:text="@string/configure_reparti_title"
-        android:textSize="18sp"
+        android:layout_marginBottom="16dp"
+        android:text="@string/modifica_tipologia_reparti"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.923"
+        app:layout_constraintEnd_toEndOf="@+id/fragment_settings_recycler_view"
+        app:layout_constraintHorizontal_bias="0.457"
         app:layout_constraintStart_toEndOf="@+id/receiptHeader"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
@@ -88,70 +86,34 @@
         app:layout_constraintTop_toBottomOf="@+id/receiptSubHeader"
         app:layout_constraintVertical_bias="0.0" />
 
-    <Button
-        android:id="@+id/configure_rep_cibo_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/fragment_settings_recycler_view"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:fontFamily="@font/roboto"
-        android:text="@string/configura_rep_cibo"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="32dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/configurazione_reparti_main_settings_title"
-        app:layout_constraintTop_toBottomOf="@+id/configurazione_reparti_main_settings_title"
+        app:layout_constraintStart_toEndOf="@+id/receiptHeaderEditText"
+        app:layout_constraintTop_toBottomOf="@+id/title_tipologia_reparti"
         app:layout_constraintVertical_bias="0.0" />
 
     <Button
-        android:id="@+id/configure_rep_bibite_button"
+        android:id="@+id/aggiungi_tipologia_reparto_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
         android:fontFamily="@font/roboto"
-        android:text="@string/configura_rep_bibite"
+        android:text="@string/aggiungi_reparto_ingolo"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/receiptSubHeaderHint"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/configurazione_reparti_main_settings_title"
-        app:layout_constraintTop_toBottomOf="@+id/configure_rep_cibo_button"
-        app:layout_constraintVertical_bias="0.05" />
-
-    <Button
-        android:id="@+id/configure_rep_cocktail_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:fontFamily="@font/roboto"
-        android:text="@string/configura_rep_cocktail"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/configurazione_reparti_main_settings_title"
-        app:layout_constraintTop_toBottomOf="@+id/configure_rep_bibite_button"
-        app:layout_constraintVertical_bias="0.06" />
-
-    <Button
-        android:id="@+id/configure_rep_altro_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:fontFamily="@font/roboto"
-        android:text="@string/configura_rep_altro"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/configurazione_reparti_main_settings_title"
-        app:layout_constraintTop_toBottomOf="@+id/configure_rep_cocktail_button"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/receiptSubHeaderHint"
         app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
