@@ -1,5 +1,6 @@
 package com.dev.simonedipaolo.cashregister.fragments;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -19,10 +21,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.dev.simonedipaolo.cashregister.R;
 import com.dev.simonedipaolo.cashregister.adapters.RepartiAdapter;
+import com.dev.simonedipaolo.cashregister.entities.TipologiaReparto;
 import com.dev.simonedipaolo.cashregister.room.StandDatabase;
 import com.dev.simonedipaolo.cashregister.utils.ConstantsUtils;
 import com.dev.simonedipaolo.cashregister.utils.OpenDatabase;
 import com.dev.simonedipaolo.cashregister.utils.ResourcesRetriever;
+
+import org.apache.commons.collections4.CollectionUtils;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by Simone Di Paolo on 28/07/2022.
@@ -48,20 +56,20 @@ public class CashRegisterFragment extends Fragment implements AdapterView.OnItem
 
     private RecyclerView recyclerView;
 
-    private String repartiCiboNames[];
-    private String repartiBibiteNames[];
-    private String repartiCocktailNames[];
-    private String repartiAltroNames[];
     private int repartiImages[];
-    private int editIcon;
     private RepartiAdapter repartiAdapter;
 
     private StandDatabase db;
+    private List<TipologiaReparto> reparti;
+    private List<String> nomiTipologiaReparto;
+    private boolean isNomiTipologiaRepartoEmpty;
+    private int tipologiaRepartoIndex;
 
     public CashRegisterFragment() {
         // empty
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -69,32 +77,25 @@ public class CashRegisterFragment extends Fragment implements AdapterView.OnItem
         View v = inflater.inflate(R.layout.fragment_cash_register, container, false);
 
         db = OpenDatabase.openDB(getActivity().getApplicationContext(), ConstantsUtils.DATABASE_NAME);
+        db = OpenDatabase.openDB(getContext(), ConstantsUtils.DATABASE_NAME);
+        reparti = db.standDao().getAllTipologiaReparto();
+
+        nomiTipologiaReparto = reparti.stream()
+                .map(tipologiaReparto -> tipologiaReparto.getTipologiaReparto())
+                .collect(Collectors.toList());
+
+        isNomiTipologiaRepartoEmpty = !CollectionUtils.isNotEmpty(nomiTipologiaReparto);
 
         viewsInitializer(v);
         createDropdownList();
 
-        repartiCiboNames = ResourcesRetriever.getRepartiCiboNames(this.getContext());
-        repartiBibiteNames = ResourcesRetriever.getRepartiBibiteNames(this.getContext());
-        repartiCocktailNames = ResourcesRetriever.getRepartiCocktailNames(this.getContext());
-        repartiAltroNames = ResourcesRetriever.getRepartiAltroNames(this.getContext());
-        repartiImages = ResourcesRetriever.getRepartiImages();
-        editIcon = ResourcesRetriever.getEditIcon();
-
-        // custom adapter for reparti
-        repartiAdapter = new RepartiAdapter(this.getContext(), this, repartiCiboNames, repartiImages, editIcon, 0);
-        recyclerView.setAdapter(repartiAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
-
+        if(CollectionUtils.isNotEmpty(reparti)) {
+            // custom adapter for reparto
+            repartiAdapter = new RepartiAdapter(this.getContext(), this, reparti.get(0).getListaReparti(), isNomiTipologiaRepartoEmpty);
+            recyclerView.setAdapter(repartiAdapter);
+            recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
+        }
         return v;
-    }
-
-    private void createDropdownList() {
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this.getContext(), R.array.default_dropdown_list, R.layout.support_simple_spinner_dropdown_item);
-
-        adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
-        dropdown.setAdapter(adapter);
-
-        dropdown.setOnItemSelectedListener(this);
     }
 
     private void viewsInitializer(View v) {
@@ -121,33 +122,24 @@ public class CashRegisterFragment extends Fragment implements AdapterView.OnItem
         recyclerView = v.findViewById(R.id.repartiSettingsRecyclerView);
     }
 
+    private void createDropdownList() {
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getContext(), R.layout.support_simple_spinner_dropdown_item, nomiTipologiaReparto);
+
+        adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+        if(isNomiTipologiaRepartoEmpty) {
+            dropdown.setActivated(false);
+            dropdown.setClickable(false);
+        }
+
+        dropdown.setAdapter(adapter);
+        dropdown.setOnItemSelectedListener(this);
+    }
+
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-        String choice = adapterView.getItemAtPosition(i).toString();
-        Toast.makeText(this.getContext(), choice, Toast.LENGTH_SHORT).show();
-
-        switch(i) {
-            case 0:
-                repartiAdapter = new RepartiAdapter(this.getContext(), this, repartiCiboNames, repartiImages, editIcon, i);
-                recyclerView.setAdapter(repartiAdapter);
-                recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
-                break;
-            case 1:
-                repartiAdapter = new RepartiAdapter(this.getContext(), this, repartiBibiteNames, repartiImages, editIcon, i);
-                recyclerView.setAdapter(repartiAdapter);
-                recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
-                break;
-            case 2:
-                repartiAdapter = new RepartiAdapter(this.getContext(), this, repartiCocktailNames, repartiImages, editIcon, i);
-                recyclerView.setAdapter(repartiAdapter);
-                recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
-                break;
-            case 3:
-                repartiAdapter = new RepartiAdapter(this.getContext(), this, repartiAltroNames, repartiImages, editIcon, i);
-                recyclerView.setAdapter(repartiAdapter);
-                recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
-                break;
-        }
+        repartiAdapter = new RepartiAdapter(this.getContext(), this, reparti.get(i).getListaReparti(), isNomiTipologiaRepartoEmpty);
+        recyclerView.setAdapter(repartiAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
     }
 
     @Override

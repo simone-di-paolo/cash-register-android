@@ -18,6 +18,7 @@
         android:inputType="textPersonName"
         android:minHeight="48dp"
         android:hint="@string/panino_e_salsiccia_hint"
+        android:imeOptions="actionDone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"

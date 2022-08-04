@@ -39,7 +39,6 @@ public class SettingsFragment extends Fragment {
     private Button aggiungiReparto;
 
     private StandDatabase db;
-    private List<TipologiaReparto> tipologiaRepartiFromDatabase;
 
     private NavController navController;
 
@@ -57,7 +56,6 @@ public class SettingsFragment extends Fragment {
         recyclerView = v.findViewById(R.id.fragment_settings_recycler_view);
 
         db = OpenDatabase.openDB(getContext(), ConstantsUtils.DATABASE_NAME);
-        tipologiaRepartiFromDatabase = db.standDao().getAllTipologiaReparto();
 
         // setto l'adapter
         tipologiaRepartiSettingsAdapter = new TipologiaRepartiSettingsAdapter(getActivity().getApplicationContext(), this);
@@ -70,11 +68,6 @@ public class SettingsFragment extends Fragment {
     }
 
     private void initializeViews(View v) {
-        SettingsFragment instance = this;
-
-        // recupero di nuovi i reparti ed i nomi dai reparti dal db (magari sono aggiornati)
-        tipologiaRepartiFromDatabase = db.standDao().getAllTipologiaReparto();
-
         // gestisco il click del pulsante crea reparto
         aggiungiReparto = v.findViewById(R.id.aggiungi_tipologia_reparto_button);
         aggiungiReparto.setOnClickListener(new View.OnClickListener() {

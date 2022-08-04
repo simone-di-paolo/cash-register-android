@@ -35,7 +35,6 @@ public class RepartiSettingsAdapter extends RecyclerView.Adapter<RepartiSettings
     private Fragment fragment;
 
     private StandDatabase db;
-    //private List<Reparto> reparti;
     private List<TipologiaReparto> reparti;
     private int tipologiaRepartoIndex;
 
@@ -94,17 +93,6 @@ public class RepartiSettingsAdapter extends RecyclerView.Adapter<RepartiSettings
                 notifyItemRangeChanged(holder.getAdapterPosition(), getItemCount());
             }
         });
-
-        /*holder.saveIcon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                db.standDao().updateReparto(new Reparto(reparti.get(holder.getAdapterPosition()).getTipologiaRepartoUid(), holder.editText.getText().toString()));
-                reparti = db.standDao().getAllTipologiaReparto();
-                notifyItemRangeChanged(holder.getAdapterPosition(), getItemCount());
-            }
-        });
-        */
-
 
         // gestisco il delete del singolo row
         holder.deleteIcon.setImageResource(R.drawable.ic_baseline_delete_24);
