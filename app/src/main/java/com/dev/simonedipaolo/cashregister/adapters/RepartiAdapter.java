@@ -15,6 +15,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.dev.simonedipaolo.cashregister.R;
 import com.dev.simonedipaolo.cashregister.utils.EditRepartoDialog;
 
+import org.apache.commons.collections4.CollectionUtils;
+
+import java.util.List;
+
 /**
  * Created by Simone Di Paolo on 31/07/2022.
  */
@@ -23,30 +27,18 @@ public class RepartiAdapter extends RecyclerView.Adapter<RepartiAdapter.RepartiV
     private Context context;
     private Fragment fragment;
 
-    private String repartiNames[];
-    private int repartiImages[];
-    private int editIcon;
+    private List<String> repartiNames;
     private int index;
     private int howManyReparti;
+    private boolean isNomiTipologiaRepartoEmpty;
 
-    public RepartiAdapter(Context context, Fragment fragment, String repartiNames[], int repartiImages[], int editIcon, int index) {
+    public RepartiAdapter(Context context, Fragment fragment, List<String> repartiNames, boolean isNomiTipologiaRepartoEmpty) {
         this.context = context;
         this.fragment = fragment;
         this.repartiNames = repartiNames;
-        this.repartiImages = repartiImages;
-        this.editIcon = editIcon;
         this.index = index;
         this.howManyReparti = 0;
-    }
-
-    public RepartiAdapter(Context context, Fragment fragment, String repartiNames[], int repartiImages[], int index, int editIcon, int howManyReparti) {
-        this.context = context;
-        this.fragment = fragment;
-        this.repartiNames = repartiNames;
-        this.repartiImages = repartiImages;
-        this.editIcon = editIcon;
-        this.index = index;
-        this.howManyReparti = howManyReparti;
+        this.isNomiTipologiaRepartoEmpty = isNomiTipologiaRepartoEmpty;
     }
 
     @NonNull
@@ -60,34 +52,28 @@ public class RepartiAdapter extends RecyclerView.Adapter<RepartiAdapter.RepartiV
 
     @Override
     public void onBindViewHolder(@NonNull RepartiViewHolder holder, int position) {
-        // TODO leggere quanti reparti sono stati creati nella memoria e creare N reparti con N nomi letti
-        if(howManyReparti != 0) {
-            holder.text.setText(repartiNames[0]);
-            holder.image.setImageResource(repartiImages[index]);
+        if (isNomiTipologiaRepartoEmpty) {
+            holder.text.setHint(R.string.configura_reparti_nelle_impostazioni);
         } else {
-            holder.text.setText(repartiNames[position]);
-            holder.image.setImageResource(repartiImages[index]);
+            if (CollectionUtils.isNotEmpty(repartiNames)) {
+                holder.text.setText(repartiNames.get(position));
+            }
         }
     }
 
     @Override
     public int getItemCount() {
-        if(howManyReparti != 0) {
-            return howManyReparti;
-        }
-        return repartiNames.length;
+        return repartiNames.size();
     }
 
     // inner class
     public class RepartiViewHolder extends RecyclerView.ViewHolder {
 
         TextView text;
-        ImageView image;
 
         public RepartiViewHolder(@NonNull View itemView) {
             super(itemView);
             text = itemView.findViewById(R.id.repartiRowText);
-            image = itemView.findViewById(R.id.rowIcon);
         }
     }
 
