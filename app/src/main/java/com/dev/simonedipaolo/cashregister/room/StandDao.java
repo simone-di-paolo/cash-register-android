@@ -23,7 +23,7 @@ public interface StandDao {
     // inserts
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertStand(Stand stand);
+    void insertStand(CashRegister stand);
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertTipologiaReparto(TipologiaReparto tipologiaReparto);
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -31,7 +31,7 @@ public interface StandDao {
 
     // updates
     @Update
-    void updateStand(Stand stand);
+    void updateStand(CashRegister stand);
     @Update
     void updateTipologiaReparto(TipologiaReparto tipologiaReparto);
     @Update
@@ -40,7 +40,7 @@ public interface StandDao {
     // insert all
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertAllStands(Stand... stands);
+    void insertAllStands(CashRegister... stands);
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAllTipologiaReparto(TipologiaReparto... tipologieReparti);
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -49,7 +49,7 @@ public interface StandDao {
     // delete
 
     @Delete
-    void deleteStand(Stand stand);
+    void deleteStand(CashRegister stand);
     @Delete
     void deleteTiplogoaReparto(TipologiaReparto tipologiaReparto);
     @Delete
@@ -57,8 +57,8 @@ public interface StandDao {
 
     // get all
     @Transaction
-    @Query("SELECT * FROM stand")
-    List<Stand> getAllStand();
+    @Query("SELECT * FROM CashRegister")
+    List<CashRegister> getAllStand();
 
     @Transaction
     @Query("SELECT * FROM tipologiareparto")
@@ -69,7 +69,7 @@ public interface StandDao {
     List<Reparto> getAllReparto();
 
     @Transaction
-    @Query("SELECT * FROM stand")
+    @Query("SELECT * FROM CashRegister")
     List<StandAndTipologiaReparto> getStandAndTipologiaRepartoList();
 
     @Transaction
