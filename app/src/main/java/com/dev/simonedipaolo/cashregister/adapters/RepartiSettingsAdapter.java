@@ -1,9 +1,11 @@
 package com.dev.simonedipaolo.cashregister.adapters;
 
 import android.content.Context;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -72,25 +74,28 @@ public class RepartiSettingsAdapter extends RecyclerView.Adapter<RepartiSettings
         String repartoName = reparti.get(tipologiaRepartoIndex).getListaReparti().get(holder.getAdapterPosition());
 
         holder.editText.setText(repartoName);
-
-        // gestisco il save del singolo row
-        holder.saveIcon.setImageResource(R.drawable.ic_baseline_save_24);
-        holder.saveIcon.setOnClickListener(new View.OnClickListener() {
+        holder.editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
-            public void onClick(View view) {
-                // prendo la tipologia reparto
-                TipologiaReparto tempTipologiaReparto = reparti.get(tipologiaRepartoIndex);
-                // prendo la lista dei nomi
-                List<String> nomiRepartiToUpdate = tempTipologiaReparto.getListaReparti();
-                // aggiorno il nome all'i-esima posizione
-                nomiRepartiToUpdate.set(holder.getAdapterPosition(), holder.editText.getText().toString());
-                //sostituisco la lista nella tipologia reparto
-                tempTipologiaReparto.setListaReparti(nomiRepartiToUpdate);
+            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+                if(i == EditorInfo.IME_ACTION_DONE) {
+                    // prendo la tipologia reparto
+                    TipologiaReparto tempTipologiaReparto = reparti.get(tipologiaRepartoIndex);
+                    // prendo la lista dei nomi
+                    List<String> nomiRepartiToUpdate = tempTipologiaReparto.getListaReparti();
+                    // aggiorno il nome all'i-esima posizione
+                    nomiRepartiToUpdate.set(holder.getAdapterPosition(), holder.editText.getText().toString());
+                    //sostituisco la lista nella tipologia reparto
+                    tempTipologiaReparto.setListaReparti(nomiRepartiToUpdate);
 
-                // aggiorno la tipologia reparto nel DB
-                db.standDao().updateTipologiaReparto(tempTipologiaReparto);
-                reparti = db.standDao().getAllTipologiaReparto();
-                notifyItemRangeChanged(holder.getAdapterPosition(), getItemCount());
+                    // aggiorno la tipologia reparto nel DB
+                    db.standDao().updateTipologiaReparto(tempTipologiaReparto);
+                    reparti = db.standDao().getAllTipologiaReparto();
+                    notifyItemRangeChanged(holder.getAdapterPosition(), getItemCount());
+
+                    return false;
+                }
+                return false;
+
             }
         });
 
@@ -142,13 +147,13 @@ public class RepartiSettingsAdapter extends RecyclerView.Adapter<RepartiSettings
     public class RepartiViewHolder extends RecyclerView.ViewHolder {
 
         private EditText editText;
-        private ImageView saveIcon;
+        //private ImageView saveIcon;
         private ImageView deleteIcon;
 
         public RepartiViewHolder(@NonNull View itemView) {
             super(itemView);
             editText = itemView.findViewById(R.id.repartoNameEditField);
-            saveIcon = itemView.findViewById(R.id.saveIcon);
+            //saveIcon = itemView.findViewById(R.id.saveIcon);
             deleteIcon = itemView.findViewById(R.id.deleteIcon);
         }
     }

@@ -1,12 +1,15 @@
-package com.dev.simonedipaolo.cashregister;
+package com.dev.simonedipaolo.cashregister.adapters;
 
 import android.content.Context;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -15,7 +18,7 @@ import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.dev.simonedipaolo.cashregister.entities.Reparto;
+import com.dev.simonedipaolo.cashregister.R;
 import com.dev.simonedipaolo.cashregister.entities.TipologiaReparto;
 import com.dev.simonedipaolo.cashregister.fragments.SettingsFragmentDirections;
 import com.dev.simonedipaolo.cashregister.room.StandDatabase;
@@ -59,18 +62,18 @@ public class TipologiaRepartiSettingsAdapter extends RecyclerView.Adapter<Tipolo
     public void onBindViewHolder(@NonNull RepartiViewHolder holder, int position) {
         // setto il testo nell'edit text leggendolo dal database
         holder.editText.setText(reparti.get(holder.getAdapterPosition()).getTipologiaReparto());
-
-        // gestisco il save del singolo row
-        holder.saveIcon.setImageResource(R.drawable.ic_baseline_save_24);
-        holder.saveIcon.setOnClickListener(new View.OnClickListener() {
+        holder.editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
-            public void onClick(View view) {
-                // prendo il reparto
-                TipologiaReparto tempTipologiaReparto = reparti.get(holder.getAdapterPosition());
-                tempTipologiaReparto.setTipologiaReparto(holder.editText.getText().toString());
-                db.standDao().updateTipologiaReparto(tempTipologiaReparto);
-                reparti = db.standDao().getAllTipologiaReparto();
-                notifyItemRangeChanged(holder.getAdapterPosition(), getItemCount());
+            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+                if(i == EditorInfo.IME_ACTION_DONE) {
+                    TipologiaReparto tempTipologiaReparto = reparti.get(holder.getAdapterPosition());
+                    tempTipologiaReparto.setTipologiaReparto(holder.editText.getText().toString());
+                    db.standDao().updateTipologiaReparto(tempTipologiaReparto);
+                    reparti = db.standDao().getAllTipologiaReparto();
+                    notifyItemRangeChanged(holder.getAdapterPosition(), getItemCount());
+                    return false;
+                }
+                return false;
             }
         });
 
@@ -124,7 +127,7 @@ public class TipologiaRepartiSettingsAdapter extends RecyclerView.Adapter<Tipolo
         public RepartiViewHolder(@NonNull View itemView) {
             super(itemView);
             editText = itemView.findViewById(R.id.tipologia_reparto_name_editText);
-            saveIcon = itemView.findViewById(R.id.tipologia_reparto_save_button);
+            //saveIcon = itemView.findViewById(R.id.tipologia_reparto_save_button);
             deleteIcon = itemView.findViewById(R.id.tipologia_reparto_delete_button);
             configureRepartiForTipologiaRepartoButton = itemView.findViewById(R.id.tipologia_reparto_conf_reparti_button);
         }

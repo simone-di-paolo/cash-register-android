@@ -12,21 +12,15 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
-import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.dev.simonedipaolo.cashregister.R;
-import com.dev.simonedipaolo.cashregister.TipologiaRepartiSettingsAdapter;
-import com.dev.simonedipaolo.cashregister.adapters.RepartiSettingsAdapter;
-import com.dev.simonedipaolo.cashregister.entities.Reparto;
-import com.dev.simonedipaolo.cashregister.entities.TipologiaReparto;
+import com.dev.simonedipaolo.cashregister.adapters.TipologiaRepartiSettingsAdapter;
 import com.dev.simonedipaolo.cashregister.room.StandDatabase;
 import com.dev.simonedipaolo.cashregister.utils.ConstantsUtils;
 import com.dev.simonedipaolo.cashregister.utils.OpenDatabase;
-
-import java.util.List;
 
 /**
  * Created by Simone Di Paolo on 30/07/2022.
