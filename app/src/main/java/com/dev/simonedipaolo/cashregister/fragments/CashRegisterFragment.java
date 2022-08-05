@@ -1,5 +1,9 @@
 package com.dev.simonedipaolo.cashregister.fragments;
 
+import static android.icu.lang.UCharacter.GraphemeClusterBreak.V;
+
+import android.icu.text.DecimalFormat;
+import android.icu.text.DecimalFormatSymbols;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,7 +13,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,14 +24,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.dev.simonedipaolo.cashregister.R;
-import com.dev.simonedipaolo.cashregister.adapters.RepartiAdapter;
+import com.dev.simonedipaolo.cashregister.adapters.CashRegisterRepartiAdapter;
 import com.dev.simonedipaolo.cashregister.entities.TipologiaReparto;
 import com.dev.simonedipaolo.cashregister.room.StandDatabase;
 import com.dev.simonedipaolo.cashregister.utils.ConstantsUtils;
 import com.dev.simonedipaolo.cashregister.utils.OpenDatabase;
-import com.dev.simonedipaolo.cashregister.utils.ResourcesRetriever;
 
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -38,26 +42,26 @@ import java.util.stream.Collectors;
 public class CashRegisterFragment extends Fragment implements AdapterView.OnItemSelectedListener {
 
     // CAULCULATORS BUTTONS
+    private Button[][] buttons;
+
     private Button button0;
-    private Button button1;
-    private Button button2;
-    private Button button3;
-    private Button button4;
-    private Button button5;
-    private Button button6;
-    private Button button7;
-    private Button button8;
-    private Button button9;
-    private Button buttonCanc;
+    private Button clearButton;
     private Button buttonComma;
+
+    private TextView calculatorTextView;
+
     private Button settingsButton;
+
+    // ---- START CALCULATORS THINGS -----
+    private String subtotal;
+    // ---- END CALCULATORS THINGS -----
 
     private Spinner dropdown;
 
     private RecyclerView recyclerView;
 
     private int repartiImages[];
-    private RepartiAdapter repartiAdapter;
+    private CashRegisterRepartiAdapter cashRegisterRepartiAdapter;
 
     private StandDatabase db;
     private List<TipologiaReparto> reparti;
@@ -86,30 +90,98 @@ public class CashRegisterFragment extends Fragment implements AdapterView.OnItem
 
         isNomiTipologiaRepartoEmpty = !CollectionUtils.isNotEmpty(nomiTipologiaReparto);
 
+        subtotal = "0";
+
+        calculatorButtonsInitializer(v);
         viewsInitializer(v);
         createDropdownList();
 
         if(CollectionUtils.isNotEmpty(reparti)) {
             // custom adapter for reparto
-            repartiAdapter = new RepartiAdapter(this.getContext(), this, reparti.get(0).getListaReparti(), isNomiTipologiaRepartoEmpty);
-            recyclerView.setAdapter(repartiAdapter);
+            cashRegisterRepartiAdapter = new CashRegisterRepartiAdapter(this.getContext(), this, reparti.get(0).getListaReparti(), isNomiTipologiaRepartoEmpty);
+            recyclerView.setAdapter(cashRegisterRepartiAdapter);
             recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
         }
         return v;
     }
 
-    private void viewsInitializer(View v) {
+    private void calculatorButtonsInitializer(View v) {
+
+        calculatorTextView = v.findViewById(R.id.calculatorTextView);
+        calculatorTextView.setText("0");
+
+        buttons = new Button[3][3];
+
+        for (int i=0; i<3; i++) {
+            for (int j=0; j<3; j++) {
+                String buttonID = "calculator_button" + i + j;
+                int resID = getResources().getIdentifier(buttonID, "id", getActivity().getPackageName());
+                buttons[i][j] = (Button) v.findViewById(resID);
+                buttons[i][j].setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if(!StringUtils.equals(subtotal, "0")) {
+                            subtotal += ((Button) v.findViewById(resID)).getText().toString();
+                        } else {
+                            subtotal = ((Button) v.findViewById(resID)).getText().toString();
+                        }
+                        calculatorTextView.setText(subtotal);
+                    }
+                });
+            }
+        }
+
         // buttons
-        button0 = v.findViewById(R.id.calculator_button0);
-        button1 = v.findViewById(R.id.calculator_button1);
-        button2 = v.findViewById(R.id.calculator_button2);
-        button3 = v.findViewById(R.id.calculator_button3);
-        button4 = v.findViewById(R.id.calculator_button4);
-        button5 = v.findViewById(R.id.calculator_button5);
-        button6 = v.findViewById(R.id.calculator_button6);
-        button7 = v.findViewById(R.id.calculator_button7);
-        button8 = v.findViewById(R.id.calculator_button8);
-        button9 = v.findViewById(R.id.calculator_button9);
+        button0 = v.findViewById(R.id.calculator_button_zero);
+        button0.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!StringUtils.equals(subtotal, "0")) {
+                    subtotal += button0.getText().toString();
+                    calculatorTextView.setText(subtotal);
+                }
+            }
+        });
+
+        // comma
+        buttonComma = v.findViewById(R.id.commaButton);
+        buttonComma.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onClick(View view) {
+                if(!StringUtils.equals(subtotal, "0")) {
+                    DecimalFormat df = new DecimalFormat("#.#", DecimalFormatSymbols.getInstance());
+                    subtotal += df.getDecimalFormatSymbols().getDecimalSeparator();
+                    calculatorTextView.setText(subtotal);
+                }
+            }
+        });
+
+        // canc button
+        clearButton = v.findViewById(R.id.clearButton);
+        clearButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(subtotal.length() > 1) {
+                    subtotal = subtotal.substring(0, subtotal.length()-1);
+                    calculatorTextView.setText(subtotal);
+                } else {
+                    subtotal = "0";
+                    calculatorTextView.setText(subtotal);
+                }
+            }
+        });
+        clearButton.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                subtotal = "0";
+                calculatorTextView.setText(subtotal);
+                return true;
+            }
+        });
+    }
+
+    private void viewsInitializer(View v) {
 
         // settings button
         settingsButton = v.findViewById(R.id.settingsButton);
@@ -137,8 +209,8 @@ public class CashRegisterFragment extends Fragment implements AdapterView.OnItem
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-        repartiAdapter = new RepartiAdapter(this.getContext(), this, reparti.get(i).getListaReparti(), isNomiTipologiaRepartoEmpty);
-        recyclerView.setAdapter(repartiAdapter);
+        cashRegisterRepartiAdapter = new CashRegisterRepartiAdapter(this.getContext(), this, reparti.get(i).getListaReparti(), isNomiTipologiaRepartoEmpty);
+        recyclerView.setAdapter(cashRegisterRepartiAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
     }
 

@@ -44,13 +44,17 @@ public class CashRegister {
     public CashRegister() {
         // empty
         this.nomeStand = StringUtils.EMPTY;
+        this.sottotitoloStand = StringUtils.EMPTY;
+        this.testChiusuraScontrino = StringUtils.EMPTY;
         this.totale = 0;
         this.subTotale = 0;
         this.elencoScontrini = new ArrayList<>();
     }
 
-    public CashRegister(String nomeStand, double totale, double subTotale) {
+    public CashRegister(String nomeStand, String sottotitoloStand, String testChiusuraScontrino, double totale, double subTotale) {
         this.nomeStand = nomeStand;
+        this.sottotitoloStand = sottotitoloStand;
+        this.testChiusuraScontrino = testChiusuraScontrino;
         this.totale = totale;
         this.subTotale = subTotale;
         this.elencoScontrini = new ArrayList<>();
