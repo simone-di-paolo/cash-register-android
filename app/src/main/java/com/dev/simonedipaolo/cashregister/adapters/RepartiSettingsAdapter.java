@@ -100,22 +100,24 @@ public class RepartiSettingsAdapter extends RecyclerView.Adapter<RepartiSettings
             @Override
             public void onClick(View view) {
                 //cancella elemento presente in DB ed aggiorna l'adapter
-                db.standDao().deleteReparto(new Reparto(reparti.get(holder.getAdapterPosition()).getTipologiaRepartoUid(), holder.editText.getText().toString()));
+                // prendo la tipologia reparto
+                TipologiaReparto tempTipologiaReparto = reparti.get(tipologiaRepartoIndex);
+                // prendo la lista dei nomi
+                List<String> nomiRepartiToUpdate = tempTipologiaReparto.getListaReparti();
+                // aggiorno il nome all'i-esima posizione
+                nomiRepartiToUpdate.remove(holder.getAdapterPosition());
+                //sostituisco la lista nella tipologia reparto
+                tempTipologiaReparto.setListaReparti(nomiRepartiToUpdate);
+                // aggiorno la tipologia reparto nel DB
+                db.standDao().updateTipologiaReparto(tempTipologiaReparto);
                 reparti = db.standDao().getAllTipologiaReparto();
                 notifyItemRemoved(holder.getAdapterPosition());
-                notifyItemRangeChanged(holder.getAdapterPosition(), getItemCount());
             }
         });
     }
 
     public void addNewReparto() {
-        db.standDao().insertReparto(new Reparto());
-        reparti = db.standDao().getAllTipologiaReparto();
-        notifyItemInserted(reparti.size());
-    }
-
-    public void addNewTipologiaReparto() {
-        String tempReparto = ConstantsUtils.DEFAULT_REPARTO_NAME;
+        String tempReparto = context.getResources().getString(R.string.default_reparto_name);
         List<String> tempListaRepartiToUpdate = reparti.get(tipologiaRepartoIndex).getListaReparti();
         tempListaRepartiToUpdate.add(tempReparto);
         reparti.get(tipologiaRepartoIndex).setListaReparti(tempListaRepartiToUpdate);

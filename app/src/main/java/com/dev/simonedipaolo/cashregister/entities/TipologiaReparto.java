@@ -1,5 +1,7 @@
 package com.dev.simonedipaolo.cashregister.entities;
 
+import android.content.res.Resources;
+
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
@@ -29,7 +31,7 @@ public class TipologiaReparto {
     @Ignore
     public TipologiaReparto() {
         // empty
-        this.tipologiaReparto = ConstantsUtils.DEFAULT_REPARTO_NAME;
+        this.tipologiaReparto = ConstantsUtils.DEFAULT_TIPOLOGIA_REPARTO_NAME;
         this.listaReparti = new ArrayList<>();
     }
 

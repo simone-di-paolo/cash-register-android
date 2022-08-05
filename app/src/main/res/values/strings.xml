@@ -114,6 +114,8 @@
     <string name="aggiungi_reparto_ingolo">Aggiungi reparto</string>
     <string name="modifica_tipologia_reparti">Modifica Tipologia Reparti</string>
     <string name="configura_reparti_nelle_impostazioni">Configura i reparti nelle impostazioni</string>
+    <string name="default_name_to_edit">Modifica questo nome</string>
+    <string name="default_reparto_name">Es. Panino + salsiccia…</string>
 
 
 </resources>

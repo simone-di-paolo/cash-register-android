@@ -95,7 +95,7 @@ public class ConfiguraRepartiFragment extends Fragment {
         aggiungiReparto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                repartiSettingsAdapter.addNewTipologiaReparto();
+                repartiSettingsAdapter.addNewReparto();
             }
         });
     }

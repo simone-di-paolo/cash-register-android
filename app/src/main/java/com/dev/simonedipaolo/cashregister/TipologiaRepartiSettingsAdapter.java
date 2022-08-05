@@ -65,7 +65,10 @@ public class TipologiaRepartiSettingsAdapter extends RecyclerView.Adapter<Tipolo
         holder.saveIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                db.standDao().updateTipologiaReparto(new TipologiaReparto(reparti.get(holder.getAdapterPosition()).getTipologiaRepartoUid(), holder.editText.getText().toString()));
+                // prendo il reparto
+                TipologiaReparto tempTipologiaReparto = reparti.get(holder.getAdapterPosition());
+                tempTipologiaReparto.setTipologiaReparto(holder.editText.getText().toString());
+                db.standDao().updateTipologiaReparto(tempTipologiaReparto);
                 reparti = db.standDao().getAllTipologiaReparto();
                 notifyItemRangeChanged(holder.getAdapterPosition(), getItemCount());
             }

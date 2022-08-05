@@ -4,16 +4,13 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.dev.simonedipaolo.cashregister.R;
-import com.dev.simonedipaolo.cashregister.utils.EditRepartoDialog;
 
 import org.apache.commons.collections4.CollectionUtils;
 
@@ -22,7 +19,7 @@ import java.util.List;
 /**
  * Created by Simone Di Paolo on 31/07/2022.
  */
-public class RepartiAdapter extends RecyclerView.Adapter<RepartiAdapter.RepartiViewHolder> {
+public class CashRegisterRepartiAdapter extends RecyclerView.Adapter<CashRegisterRepartiAdapter.RepartiViewHolder> {
 
     private Context context;
     private Fragment fragment;
@@ -32,7 +29,7 @@ public class RepartiAdapter extends RecyclerView.Adapter<RepartiAdapter.RepartiV
     private int howManyReparti;
     private boolean isNomiTipologiaRepartoEmpty;
 
-    public RepartiAdapter(Context context, Fragment fragment, List<String> repartiNames, boolean isNomiTipologiaRepartoEmpty) {
+    public CashRegisterRepartiAdapter(Context context, Fragment fragment, List<String> repartiNames, boolean isNomiTipologiaRepartoEmpty) {
         this.context = context;
         this.fragment = fragment;
         this.repartiNames = repartiNames;
