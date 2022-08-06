@@ -2,7 +2,7 @@
 <br />
 <div align="left">
   <a href="https://github.com/simone-di-paolo">
-    <img src="app/src/main/res/logo/sdp-logo-black.png" alt="Logo" width="80" height="80">
+    <img src="logo/sdp-logo-black.png" alt="Logo" width="80" height="80">
   </a>
 </div>
 
