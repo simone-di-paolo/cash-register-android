@@ -13,10 +13,12 @@ import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.dev.simonedipaolo.cashregister.R;
+import com.dev.simonedipaolo.cashregister.adapters.ReclcyerRowMoveCallback;
 import com.dev.simonedipaolo.cashregister.adapters.TipologiaRepartiSettingsAdapter;
 import com.dev.simonedipaolo.cashregister.room.StandDatabase;
 import com.dev.simonedipaolo.cashregister.utils.ConstantsUtils;
@@ -67,7 +69,7 @@ public class SettingsFragment extends Fragment {
         aggiungiReparto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                tipologiaRepartiSettingsAdapter.addNewReparto();
+                tipologiaRepartiSettingsAdapter.addNewTipologiaReparto();
             }
         });
     }

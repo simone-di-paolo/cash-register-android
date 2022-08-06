@@ -1,4 +1,4 @@
-package com.dev.simonedipaolo.cashregister.room;
+package com.dev.simonedipaolo.cashregister.room.dao;
 
 import androidx.room.Dao;
 import androidx.room.Delete;
@@ -18,7 +18,7 @@ import java.util.List;
  * Created by Simone Di Paolo on 02/08/2022.
  */
 @Dao
-public interface StandDao {
+public interface CashRegisterDao {
 
     // inserts
 
@@ -31,11 +31,13 @@ public interface StandDao {
 
     // updates
     @Update
-    void updateStand(CashRegister stand);
+    void updateCashRegister(CashRegister cashRegister);
     @Update
     void updateTipologiaReparto(TipologiaReparto tipologiaReparto);
     @Update
     void updateReparto(Reparto reparto);
+    @Update
+    void updateListTipologiaReparti(List<TipologiaReparto> tipologiaReparti);
 
     // insert all
 
@@ -51,18 +53,27 @@ public interface StandDao {
     @Delete
     void deleteStand(CashRegister stand);
     @Delete
-    void deleteTiplogoaReparto(TipologiaReparto tipologiaReparto);
+    void deleteTiplogiaReparto(TipologiaReparto tipologiaReparto);
     @Delete
     void deleteReparto(Reparto reparto);
 
     // get all
     @Transaction
     @Query("SELECT * FROM CashRegister")
-    List<CashRegister> getAllStand();
+    List<CashRegister> getAllCashRegister();
 
     @Transaction
     @Query("SELECT * FROM tipologiareparto")
     List<TipologiaReparto> getAllTipologiaReparto();
+
+    @Query("UPDATE CashRegister SET list_tipologia_reparti = :listaTipologiaReparti")
+    void updateListTipologiaRepartoInCashRegister(List<TipologiaReparto> listaTipologiaReparti);
+
+    @Query("UPDATE TipologiaReparto SET lista_reparti = :listaTipologiaReparti")
+    void updateListTipologiaRepartoInTipologiaReparto(List<String> listaTipologiaReparti);
+
+    @Query("UPDATE TipologiaReparto SET lista_reparti = :listaTipologiaReparti WHERE tipologia_reparto_uid = :tipologiaRepartoUid")
+    void updateListTipologiaRepartoInTipologiaRepartoByUid(List<String> listaTipologiaReparti, int tipologiaRepartoUid);
 
     @Transaction
     @Query("SELECT * FROM reparto")

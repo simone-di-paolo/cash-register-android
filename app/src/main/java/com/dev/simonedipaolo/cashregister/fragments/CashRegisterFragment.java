@@ -25,6 +25,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.dev.simonedipaolo.cashregister.R;
 import com.dev.simonedipaolo.cashregister.adapters.CashRegisterRepartiAdapter;
+import com.dev.simonedipaolo.cashregister.entities.CashRegister;
 import com.dev.simonedipaolo.cashregister.entities.TipologiaReparto;
 import com.dev.simonedipaolo.cashregister.room.StandDatabase;
 import com.dev.simonedipaolo.cashregister.utils.ConstantsUtils;
@@ -63,7 +64,9 @@ public class CashRegisterFragment extends Fragment implements AdapterView.OnItem
     private int repartiImages[];
     private CashRegisterRepartiAdapter cashRegisterRepartiAdapter;
 
+
     private StandDatabase db;
+    private CashRegister cashRegister;
     private List<TipologiaReparto> reparti;
     private List<String> nomiTipologiaReparto;
     private boolean isNomiTipologiaRepartoEmpty;
@@ -82,7 +85,14 @@ public class CashRegisterFragment extends Fragment implements AdapterView.OnItem
 
         db = OpenDatabase.openDB(getActivity().getApplicationContext(), ConstantsUtils.DATABASE_NAME);
         db = OpenDatabase.openDB(getContext(), ConstantsUtils.DATABASE_NAME);
-        reparti = db.standDao().getAllTipologiaReparto();
+        reparti = db.cashRegisterDao().getAllTipologiaReparto();
+
+        List<CashRegister> listOfCashRegister = db.cashRegisterDao().getAllCashRegister();
+        if (CollectionUtils.isEmpty(listOfCashRegister)) {
+            // create just one cash register
+            listOfCashRegister.add(new CashRegister());
+            db.cashRegisterDao().insertStand(new CashRegister());
+        }
 
         nomiTipologiaReparto = reparti.stream()
                 .map(tipologiaReparto -> tipologiaReparto.getTipologiaReparto())

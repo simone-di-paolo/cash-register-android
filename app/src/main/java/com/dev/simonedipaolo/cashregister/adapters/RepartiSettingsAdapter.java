@@ -1,6 +1,7 @@
 package com.dev.simonedipaolo.cashregister.adapters;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.util.StringUtil;
 
 import com.dev.simonedipaolo.cashregister.R;
 import com.dev.simonedipaolo.cashregister.entities.Reparto;
@@ -26,12 +28,14 @@ import com.dev.simonedipaolo.cashregister.utils.OpenDatabase;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
  * Created by Simone Di Paolo on 31/07/2022.
  */
-public class RepartiSettingsAdapter extends RecyclerView.Adapter<RepartiSettingsAdapter.RepartiViewHolder> {
+public class RepartiSettingsAdapter extends RecyclerView.Adapter<RepartiSettingsAdapter.RepartiViewHolder>
+        implements ReclcyerRowMoveCallback.RecyclerViewRowTouchHelperContract {
 
     private Context context;
     private Fragment fragment;
@@ -45,7 +49,7 @@ public class RepartiSettingsAdapter extends RecyclerView.Adapter<RepartiSettings
         this.fragment = fragment;
 
         db = OpenDatabase.openDB(fragment.getContext(), ConstantsUtils.DATABASE_NAME);
-        reparti = db.standDao().getAllTipologiaReparto();
+        reparti = db.cashRegisterDao().getAllTipologiaReparto();
         // default value
         this.tipologiaRepartoIndex = 0;
     }
@@ -55,7 +59,7 @@ public class RepartiSettingsAdapter extends RecyclerView.Adapter<RepartiSettings
         this.fragment = fragment;
 
         db = OpenDatabase.openDB(fragment.getContext(), ConstantsUtils.DATABASE_NAME);
-        reparti = db.standDao().getAllTipologiaReparto();
+        reparti = db.cashRegisterDao().getAllTipologiaReparto();
         this.tipologiaRepartoIndex = tipologiaRepartoIndex;
     }
 
@@ -73,7 +77,13 @@ public class RepartiSettingsAdapter extends RecyclerView.Adapter<RepartiSettings
         // prendo il name del reparto in base alla tipologia reparto che ho cliccato
         String repartoName = reparti.get(tipologiaRepartoIndex).getListaReparti().get(holder.getAdapterPosition());
 
-        holder.editText.setText(repartoName);
+        if(StringUtils.isEmpty(repartoName) || StringUtils.equals(repartoName, context.getResources().getString(R.string.default_reparto_name))) {
+            holder.editText.setHint(repartoName);
+            holder.editText.getText().clear();
+        } else {
+            holder.editText.setText(repartoName);
+        }
+
         holder.editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
@@ -88,14 +98,11 @@ public class RepartiSettingsAdapter extends RecyclerView.Adapter<RepartiSettings
                     tempTipologiaReparto.setListaReparti(nomiRepartiToUpdate);
 
                     // aggiorno la tipologia reparto nel DB
-                    db.standDao().updateTipologiaReparto(tempTipologiaReparto);
-                    reparti = db.standDao().getAllTipologiaReparto();
+                    db.cashRegisterDao().updateTipologiaReparto(tempTipologiaReparto);
+                    reparti = db.cashRegisterDao().getAllTipologiaReparto();
                     notifyItemRangeChanged(holder.getAdapterPosition(), getItemCount());
-
-                    return false;
                 }
                 return false;
-
             }
         });
 
@@ -114,8 +121,8 @@ public class RepartiSettingsAdapter extends RecyclerView.Adapter<RepartiSettings
                 //sostituisco la lista nella tipologia reparto
                 tempTipologiaReparto.setListaReparti(nomiRepartiToUpdate);
                 // aggiorno la tipologia reparto nel DB
-                db.standDao().updateTipologiaReparto(tempTipologiaReparto);
-                reparti = db.standDao().getAllTipologiaReparto();
+                db.cashRegisterDao().updateTipologiaReparto(tempTipologiaReparto);
+                reparti = db.cashRegisterDao().getAllTipologiaReparto();
                 notifyItemRemoved(holder.getAdapterPosition());
             }
         });
@@ -127,8 +134,8 @@ public class RepartiSettingsAdapter extends RecyclerView.Adapter<RepartiSettings
         tempListaRepartiToUpdate.add(tempReparto);
         reparti.get(tipologiaRepartoIndex).setListaReparti(tempListaRepartiToUpdate);
 
-        db.standDao().updateTipologiaReparto(reparti.get(tipologiaRepartoIndex));
-        reparti = db.standDao().getAllTipologiaReparto();
+        db.cashRegisterDao().updateTipologiaReparto(reparti.get(tipologiaRepartoIndex));
+        reparti = db.cashRegisterDao().getAllTipologiaReparto();
         notifyItemInserted(reparti.get(tipologiaRepartoIndex).getListaReparti().size());
     }
 
@@ -140,6 +147,44 @@ public class RepartiSettingsAdapter extends RecyclerView.Adapter<RepartiSettings
     @Override
     public int getItemCount() {
         return reparti.get(tipologiaRepartoIndex).getListaReparti().size();
+    }
+
+    @Override
+    public void onRowMoved(int from, int to) {
+        List<String> tempListaRepartiToUpdate = reparti.get(tipologiaRepartoIndex).getListaReparti();
+
+        if(from < to) {
+            for (int i=from; i<to; i++) {
+                Collections.swap(tempListaRepartiToUpdate, i, i+1);
+            }
+        } else {
+            for (int i=from; i>to; i--) {
+                Collections.swap(tempListaRepartiToUpdate, i, i-1);
+            }
+        }
+        db.cashRegisterDao().updateTipologiaReparto(reparti.get(tipologiaRepartoIndex));
+        reparti = db.cashRegisterDao().getAllTipologiaReparto();
+        notifyItemMoved(from, to);
+    }
+
+    @Override
+    public void onRepartiSettingsAdapterRowSelected(RepartiViewHolder myViewHolder) {
+        myViewHolder.itemView.setBackgroundColor(Color.GRAY);
+    }
+
+    @Override
+    public void onRepartiSettingsAdapterRowClear(RepartiViewHolder myViewHolder) {
+        myViewHolder.itemView.setBackgroundColor(Color.WHITE);
+    }
+
+    @Override
+    public void onTipologiaRepartiSettingsRowSelected(TipologiaRepartiSettingsAdapter.RepartiViewHolder myViewHolder) {
+        return;
+    }
+
+    @Override
+    public void onTipologiaRepartiSettingsRowClear(TipologiaRepartiSettingsAdapter.RepartiViewHolder myViewHolder) {
+        return;
     }
 
 
