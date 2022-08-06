@@ -12,10 +12,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.dev.simonedipaolo.cashregister.R;
+import com.dev.simonedipaolo.cashregister.adapters.ReclcyerRowMoveCallback;
 import com.dev.simonedipaolo.cashregister.adapters.RepartiSettingsAdapter;
 import com.dev.simonedipaolo.cashregister.entities.Reparto;
 import com.dev.simonedipaolo.cashregister.entities.TipologiaReparto;
@@ -68,14 +70,17 @@ public class ConfiguraRepartiFragment extends Fragment {
         recyclerView = v.findViewById(R.id.repartiSettingsRecyclerView);
 
         db = OpenDatabase.openDB(getContext(), ConstantsUtils.DATABASE_NAME);
-        repartiFromDatabase = db.standDao().getAllReparto();
+        repartiFromDatabase = db.cashRegisterDao().getAllReparto();
 
-        reparti = db.standDao().getAllTipologiaReparto();
+        reparti = db.cashRegisterDao().getAllTipologiaReparto();
 
         tipologiaRepartoIndex = ConfiguraRepartiFragmentArgs.fromBundle(getArguments()).getRepartoIndex();
 
         // setto l'adapter
         repartiSettingsAdapter = new RepartiSettingsAdapter(getActivity().getApplicationContext(), this, tipologiaRepartoIndex);
+        ItemTouchHelper.Callback callback = new ReclcyerRowMoveCallback(repartiSettingsAdapter);
+        ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
+        touchHelper.attachToRecyclerView(recyclerView);
         setAdapter(repartiSettingsAdapter);
 
         instantiateViews(v);
@@ -88,7 +93,7 @@ public class ConfiguraRepartiFragment extends Fragment {
         ConfiguraRepartiFragment instance = this;
 
         // recupero di nuovi i reparti ed i nomi dai reparti dal db (magari sono aggiornati)
-        repartiFromDatabase = db.standDao().getAllReparto();
+        repartiFromDatabase = db.cashRegisterDao().getAllReparto();
 
         // gestisco il click del pulsante crea reparto
         aggiungiReparto = v.findViewById(R.id.aggiungiRepartoSingolo);

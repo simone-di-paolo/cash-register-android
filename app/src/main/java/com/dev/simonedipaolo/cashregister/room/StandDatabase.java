@@ -8,6 +8,8 @@ import com.dev.simonedipaolo.cashregister.entities.CashRegister;
 import com.dev.simonedipaolo.cashregister.entities.Receipt;
 import com.dev.simonedipaolo.cashregister.entities.Reparto;
 import com.dev.simonedipaolo.cashregister.entities.TipologiaReparto;
+import com.dev.simonedipaolo.cashregister.room.dao.CashRegisterDao;
+import com.dev.simonedipaolo.cashregister.room.dao.TipologiaRepartoDao;
 
 /**
  * Created by Simone Di Paolo on 02/08/2022.
@@ -17,8 +19,9 @@ import com.dev.simonedipaolo.cashregister.entities.TipologiaReparto;
         TipologiaReparto.class,
         Reparto.class,
         Receipt.class
-}, version = 4)
+}, version = 1)
 @TypeConverters({Converters.class})
 public abstract class StandDatabase extends RoomDatabase {
-    public abstract StandDao standDao();
+    public abstract CashRegisterDao cashRegisterDao();
+    public abstract TipologiaRepartoDao tipologiaRepartoDao();
 }

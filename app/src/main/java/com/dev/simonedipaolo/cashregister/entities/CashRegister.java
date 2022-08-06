@@ -40,6 +40,12 @@ public class CashRegister {
     @ColumnInfo(name = "elenco_scontrini")
     private List<Receipt> elencoScontrini;
 
+    @ColumnInfo(name = "list_tipologia_reparti")
+    private List<TipologiaReparto> listTipologiaReparti;
+
+    @ColumnInfo(name = "list_tipologia_reparti_names")
+    private List<String> listTipologiaRepartiNames;
+
     @Ignore
     public CashRegister() {
         // empty
@@ -49,6 +55,8 @@ public class CashRegister {
         this.totale = 0;
         this.subTotale = 0;
         this.elencoScontrini = new ArrayList<>();
+        this.listTipologiaReparti = new ArrayList<>();
+        this.listTipologiaRepartiNames = new ArrayList<>();
     }
 
     public CashRegister(String nomeStand, String sottotitoloStand, String testChiusuraScontrino, double totale, double subTotale) {
@@ -58,6 +66,8 @@ public class CashRegister {
         this.totale = totale;
         this.subTotale = subTotale;
         this.elencoScontrini = new ArrayList<>();
+        this.listTipologiaReparti = new ArrayList<>();
+        this.listTipologiaRepartiNames = new ArrayList<>();
     }
 
     public int getCashRegisterUid() {
@@ -114,5 +124,21 @@ public class CashRegister {
 
     public void setElencoScontrini(List<Receipt> elencoScontrini) {
         this.elencoScontrini = elencoScontrini;
+    }
+
+    public List<TipologiaReparto> getListTipologiaReparti() {
+        return listTipologiaReparti;
+    }
+
+    public void setListTipologiaReparti(List<TipologiaReparto> listTipologiaReparti) {
+        this.listTipologiaReparti = listTipologiaReparti;
+    }
+
+    public List<String> getListTipologiaRepartiNames() {
+        return listTipologiaRepartiNames;
+    }
+
+    public void setListTipologiaRepartiNames(List<String> listTipologiaRepartiNames) {
+        this.listTipologiaRepartiNames = listTipologiaRepartiNames;
     }
 }

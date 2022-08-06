@@ -7,6 +7,8 @@ import androidx.room.PrimaryKey;
 
 import com.dev.simonedipaolo.cashregister.utils.ConstantsUtils;
 
+import org.apache.commons.lang3.StringUtils;
+
 /**
  * Created by Simone Di Paolo on 02/08/2022.
  */
@@ -23,7 +25,7 @@ public class Reparto {
     @Ignore
     public Reparto() {
         // empty
-        nomeReparto = ConstantsUtils.DEFAULT_REPARTO_NAME;
+        nomeReparto = StringUtils.EMPTY;
     }
 
     @Ignore
